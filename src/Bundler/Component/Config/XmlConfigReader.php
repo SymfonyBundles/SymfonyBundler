@@ -16,24 +16,20 @@ class XmlConfigReader extends ConfigReader
     /**
      * {@inheritdoc}
      */
-    public function read($file)
+    protected function parseFile($file)
     {
         $xml = $this->readXml($file);
-        $config = new ConfigurationContainer($xml['defaultRepo']);
-        foreach ($xml->bundle as $bundle) {
-            $config->addBundle($bundle['name'], $bundle['version'], $bundle['repo']);
+        
+        if ((string)$xml['defaultRepo']) {
+            $this->configuration->setDefaultRepository((string)$xml['defaultRepo']);
         }
-        return $config;
-    }
-    
-    /**
-     * Read a file in xml format into a php object
-     * @param $file Path or URL to a XML file
-     * @return SimpleXMLElement The root element
-     */
-    public function readXml($file)
-    {
-        return $this->parseFile($file);
+        if ((string)$xml['defaultNamespace']) {
+            $this->configuration->setDefaultNamespace((string)$xml['defaultNamespace']);
+        }
+        
+        foreach ($xml->bundle as $bundle) {
+            $this->configuration->addBundle((string)$bundle['name'], (string)$bundle['version'], (string)$bundle['repo']);
+        }
     }
     
     /**
@@ -42,7 +38,7 @@ class XmlConfigReader extends ConfigReader
      * @return SimpleXMLElement the parsed configuration
      * @throws InvalidArgumentException When unable to load config file
      */
-    protected function parseFile($file)
+    protected function readXml($file)
     {
         $dom = new \DOMDocument();
         libxml_use_internal_errors(true);
@@ -61,7 +57,7 @@ class XmlConfigReader extends ConfigReader
         $dom->normalizeDocument();
         libxml_use_internal_errors(false);
         
-        return simplexml_import_dom($dom, 'Symfony\\Component\\DependencyInjection\\SimpleXMLElement');
+        return simplexml_import_dom($dom);
     }
     
     /**

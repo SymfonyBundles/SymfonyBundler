@@ -2,7 +2,6 @@
 
 namespace Bundler\Component\Config;
 
-use Bundler\Component\Exception\BundlerException;
 use Bundler\Component\Exception\VersionConflictException;
 
 /**
@@ -24,13 +23,13 @@ class BundleQueue
     
     public function __construct()
     {
-        $this->queue = new \SplPriorityQueue();
     }
     
     /**
      * Insert a bundle in the queue. All dependencies are added automatically.
      * @param $bundle The bundle to be added
      * @param $priority Initial priority the bundle is given if it doesn't already exist
+     * 
      * @throws VersionConflictException When a bundle is present in different versions
      */
     public function insert(BundleDescriptor $bundle, $priority=0)
@@ -62,17 +61,22 @@ class BundleQueue
         return $queue;
     }
     
+    /**
+     * Increments the priority of a bundle, when it is already in the queue
+     * @param $bundle The bundle that triggers the increment
+     * 
+     * @throws VersionConflictException When the bundle in the queue has a different version
+     */
     protected function incrementPriority(BundleDescriptor $bundle)
     {
-        // Check presence of bundle
-        if (!array_key_exists($bundle->name, $this->bundles)) {
-            throw new BundlerException("Bundle $bundle->name not present in the queue!");
-        }
+        // Bundle should be present in the queue
+        assert(array_key_exists($bundle->name, $this->bundles));
+        
         // Check version
         // TODO: Check version within boundaries (minVersion, maxVersion)
-        if ($this->bundles[$bundle->name]->version != $bundle->version) {
+        if ($this->bundles[$bundle->name]['bundle']->version != $bundle->version) {
             throw new VersionConflictException($bundle->name,
-                array($bundle->version, $this->bundles[$bundle->name]->version));
+                array($bundle->version, $this->bundles[$bundle->name]['bundle']->version));
         }
         $this->bundles[$bundle->name]['priority']++;
     }

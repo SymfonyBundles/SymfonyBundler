@@ -12,12 +12,9 @@ abstract class ConfigReader
     /**
      * @param $path The path to the configuration file
      */
-    public function __construct($path)
+    public function __construct(ConfigurationContainer $configurationContainer)
     {
-        if (!file_exists($path)) {
-            throw new \InvalidArgumentException("Config file $path does not exist.");
-        }
-        $this->configuration = $this->read($path);
+        $this->configuration = $configurationContainer;
     }
     
     /**
@@ -32,8 +29,19 @@ abstract class ConfigReader
     /**
      * Reads a configuration from a file
      * @param $file Path to the configuration file
-     * @return ConfigurationContainer
      */
-    public abstract function read($file);
+    public function read($file)
+    {
+        if (!file_exists($file)) {
+            throw new \InvalidArgumentException("Config file $file does not exist.");
+        }
+        
+        $this->parseFile($file);
+    }
     
+    /**
+     * Parse a configuration file and populate the ConfigurationContainer
+     * @param string $file The path to the config file
+     */
+    protected abstract function parseFile($file);
 }

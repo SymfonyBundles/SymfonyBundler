@@ -28,10 +28,11 @@ class BundleDescriptor
      * @param $name Bundle name
      * @param $version Bundle version
      */
-    public function __construct($name=null, $version=null)
+    public function __construct($name=null, $version=null, $namespace=null)
     {
         $this->name = $name;
         $this->version = $version;
+        $this->namespace = $namespace;
     }
     
     /**
