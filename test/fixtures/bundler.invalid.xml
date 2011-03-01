@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundler defaultRepo="SymfonyBundles" defaultNamespace="Bundles">
+  <bundle name="bundle_1" version="master" repo="lbotsch" />
+  <bundle name="bundle_2" version="pr6" />
+<!--</bundler> ERROR is intended-->
