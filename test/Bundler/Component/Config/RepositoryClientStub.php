@@ -4,8 +4,10 @@ namespace Bundler\Component\Config;
 
 use Bundler\Component\Repo\RepositoryClientInterface;
 
-class RepositoryClientStub implements RepositoryClientInterface
+abstract class RepositoryClientStub implements RepositoryClientInterface
 {
+    public function __construct() {}
+    
     /**
      * {@inheritdoc}
      */
