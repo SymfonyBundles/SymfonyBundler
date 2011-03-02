@@ -4,14 +4,12 @@ namespace Bundler\Component\Config;
 
 use Bundler\Component\Exception\UnknownBundleException;
 
-require_once __DIR__."/RepositoryClientStub.php";
-
 class ConfigurationContainerTest extends \PHPUnit_Framework_TestCase
 {
     public function testEmpty()
     {
-        $client = $this->getMock("Bundler\\Component\\Config\\RepositoryClientStub",
-                                 null, array(), "RepositoryClientStub_Null");
+        $client = $this->getMock("Bundler\\Component\\Repo\\RepositoryClientInterface",
+                                 array(), array(), "RepositoryClient_Null");
         $container = new ConfigurationContainer($client);
         $this->assertEmpty($container->getBundles());
         
@@ -23,8 +21,8 @@ class ConfigurationContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetDefaultRepository()
     {
-        $client = $this->getMock("Bundler\\Component\\Config\\RepositoryClientStub",
-                                 array("bundleExists"), array(), "RepositoryClientStub_DefaultRepoTest");
+        $client = $this->getMock("Bundler\\Component\\Repo\\RepositoryClientInterface",
+                                 array(), array(), "RepositoryClientStub_DefaultRepoTest");
         $client->expects($this->once())
                ->method("bundleExists")
                ->with($this->equalTo("DEFAULT_REPO_TEST"),
@@ -41,8 +39,8 @@ class ConfigurationContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetDefaultNamespace()
     {
-        $client = $this->getMock("Bundler\\Component\\Config\\RepositoryClientStub",
-                                 array("bundleExists", "getConfigXml"), array(), "RepositoryClientStub_DefaultNamespaceTest");
+        $client = $this->getMock("Bundler\\Component\\Repo\\RepositoryClientInterface",
+                                 array(), array(), "RepositoryClientStub_DefaultNamespaceTest");
         $client->expects($this->any())
                ->method("bundleExists")
                ->will($this->returnValue(true));
@@ -66,8 +64,8 @@ class ConfigurationContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInsertUnknownBundle()
     {
-        $client = $this->getMock("Bundler\\Component\\Config\\RepositoryClientStub",
-                                 array("bundleExists"), array(), "RepositoryClientStub_Empty");
+        $client = $this->getMock("Bundler\\Component\\Repo\\RepositoryClientInterface",
+                                 array(), array(), "RepositoryClientStub_Empty");
         $client->expects($this->any())
                ->method('bundleExists')
                ->will($this->returnValue(false));
@@ -80,8 +78,8 @@ class ConfigurationContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInsertBundle()
     {
-        $client = $this->getMock("Bundler\\Component\\Config\\RepositoryClientStub",
-                                 array("bundleExists", "getConfigXml"), array(), "RepositoryClientStub_Full");
+        $client = $this->getMock("Bundler\\Component\\Repo\\RepositoryClientInterface",
+                                 array(), array(), "RepositoryClientStub_Full");
         $client->expects($this->any())
                ->method('bundleExists')
                ->will($this->returnValue(true));
@@ -114,8 +112,8 @@ class ConfigurationContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInsertBundleWithVersionConflict(ConfigurationContainer $container)
     {
-        $client = $this->getMock("Bundler\\Component\\Config\\RepositoryClientStub",
-                                 array("bundleExists", "getConfigXml"), array(), "RepositoryClientStub_Conflict");
+        $client = $this->getMock("Bundler\\Component\\Repo\\RepositoryClientInterface",
+                                 array(), array(), "RepositoryClientStub_Conflict");
         $client->expects($this->any())
                ->method('bundleExists')
                ->will($this->returnValue(true));
