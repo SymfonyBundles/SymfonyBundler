@@ -18,9 +18,20 @@ interface RepositoryClientInterface
      * @param $namespace The bundle namespace
      * @param $bundle The bundle name
      * @param $version The bundle version
-     * @return SimpleXmlElement The configuration
+     * @return string The configuration data
      * @throws Bundler\Component\Exception\UnknownBundleException When the bundle can't be found
      */
     public function getConfigXml($namespace, $bundle, $version);
+    
+    /**
+     * Download a bundle and save it locally
+     * @param string $target The target directory
+     * @param string $namespace The bundle namespace
+     * @param $bundle The bundle name
+     * @param $version The bundle version
+     * @return bool Whether the download was successful or not
+     * @throws Bundler\Component\Exception\UnknownBundleException When the bundle can't be found
+     */
+    public function downloadBundle($target, $namespace, $bundle, $version);
     
 }
