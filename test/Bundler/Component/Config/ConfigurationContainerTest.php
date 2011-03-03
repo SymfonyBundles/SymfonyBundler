@@ -50,7 +50,7 @@ class ConfigurationContainerTest extends \PHPUnit_Framework_TestCase
                    $xml  = "<bundle name=\"$bundle\" version=\"$version\">";
                    $xml .=   "<dependencies />";
                    $xml .= "</bundle>";
-                   return simplexml_load_string($xml);
+                   return $xml;
                }));
         $container = new ConfigurationContainer($client);
         $container->setDefaultNamespace("DEFAULT_NAMESPACE_TEST");
@@ -95,7 +95,7 @@ class ConfigurationContainerTest extends \PHPUnit_Framework_TestCase
                        $xml .= "<dependencies />";
                    }
                    $xml .= "</bundle>";
-                   return simplexml_load_string($xml);
+                   return $xml;
                }));
         $container = new ConfigurationContainer($client, "DEFAULT_REPO", "DEFAULT_NAMESPACE");
         $container->addBundle("bundle", "version");
@@ -122,7 +122,7 @@ class ConfigurationContainerTest extends \PHPUnit_Framework_TestCase
                ->will($this->returnCallback(function($namespace, $bundle, $version) {
                    $xml = "<bundle name=\"$bundle\" version=\"$version\" namespace=\"Bundles\">
                    <dependencies /></bundle>";
-                   return simplexml_load_string($xml);
+                   return $xml;
                }));
         $container->setRepositoryClient($client);
         $container->addBundle("bundle_depend", "CONFLICT");

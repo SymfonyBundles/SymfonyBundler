@@ -45,4 +45,20 @@ class XmlConfigReaderTest extends \PHPUnit_Framework_TestCase
     {
         $reader->read(__DIR__."/../../../fixtures/bundler.invalid.xml");
     }
+    
+    public function testReadXmlString()
+    {
+        $xml = "<container><option>VALUE</option></container>";
+        $xml = XmlConfigReader::readXmlFromString($xml);
+        $this->assertEquals("VALUE", (string)$xml->option[0]);
+    }
+    
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testReadInvalidXmlString()
+    {
+        $xml = "<container><option>VALUE</container>";
+        $xml = XmlConfigReader::readXmlFromString($xml);
+    }
 }
