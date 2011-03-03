@@ -18,7 +18,7 @@ class XmlConfigReader extends ConfigReader
      */
     protected function parseFile($file)
     {
-        $xml = $this->readXml($file);
+        $xml = static::readXml($file);
         
         if ((string)$xml['defaultRepo']) {
             $this->configuration->setDefaultRepository((string)$xml['defaultRepo']);
@@ -38,7 +38,7 @@ class XmlConfigReader extends ConfigReader
      * @return SimpleXMLElement the parsed configuration
      * @throws InvalidArgumentException When unable to load config file
      */
-    protected function readXml($file)
+    public static function readXml($file)
     {
         $dom = new \DOMDocument();
         libxml_use_internal_errors(true);
@@ -51,7 +51,21 @@ class XmlConfigReader extends ConfigReader
         libxml_set_streams_context($context);
         
         if (!$dom->load($file, LIBXML_COMPACT)) {
-            throw new \InvalidArgumentException(implode("\n", $this->getXmlErrors()));
+            throw new \InvalidArgumentException(implode("\n", static::getXmlErrors()));
+        }
+        $dom->validateOnParse = true;
+        $dom->normalizeDocument();
+        libxml_use_internal_errors(false);
+        
+        return simplexml_import_dom($dom);
+    }
+    
+    public static function readXmlFromString($xml)
+    {
+        $dom = new \DOMDocument();
+        libxml_use_internal_errors(true);
+        if (!$dom->loadXML($xml, LIBXML_COMPACT)) {
+            throw new \InvalidArgumentException(implode("\n", static::getXmlErrors()));
         }
         $dom->validateOnParse = true;
         $dom->normalizeDocument();
@@ -65,7 +79,7 @@ class XmlConfigReader extends ConfigReader
      *
      * @return array
      */
-    protected function getXmlErrors()
+    protected static function getXmlErrors()
     {
         $errors = array();
         foreach (libxml_get_errors() as $error) {

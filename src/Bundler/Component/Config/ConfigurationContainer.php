@@ -124,6 +124,7 @@ class ConfigurationContainer
         if ($repo === null) $repo = $this->defaultRepo;
         //$url = 'https://github.com/'.$repo.'/'.$name.'/raw/'.$version.'/bundle.xml';
         $xml = $this->repositoryClient->getConfigXml($repo, $name, $version);
+        $xml = XmlConfigReader::readXmlFromString($xml);
         $bundle = new BundleDescriptor();
         $bundle->name = (string)$xml['name'];
         $bundle->version = (string)$xml['version'];
