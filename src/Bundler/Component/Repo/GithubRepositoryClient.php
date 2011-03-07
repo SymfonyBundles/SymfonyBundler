@@ -45,6 +45,15 @@ class GithubRepositoryClient implements RepositoryClientInterface
     }
     
     /**
+     * Sets the git root directory the submodules are included in
+     * @param string $gitRoot
+     */
+    public function setGitRoot($gitRoot)
+    {
+        $this->gitRoot = $gitRoot;
+    }
+    
+    /**
      * Set the format string for the base bundle path
      * The format string can include the following placeholders:
      *      %1$s --> The namespace
@@ -55,6 +64,18 @@ class GithubRepositoryClient implements RepositoryClientInterface
     public function setConfigFileFormatString($formatString)
     {
         $this->configFileFormatString = $formatString;
+    }
+    
+    /**
+     * Set the format string for the bundles public git url
+     * The format string can include the following placeholders:
+     *      %1$s --> The namespace
+     *      %2$s --> The bundle name
+     * @param $formatString
+     */
+    public function setPublicRepoFormatString($formatString)
+    {
+        $this->publicRepoUrlFormatString = $formatString;
     }
     
     /**
@@ -74,11 +95,11 @@ class GithubRepositoryClient implements RepositoryClientInterface
         } else {
             $url = sprintf($this->configFileFormatString, $namespace, $bundle, $version)."/bundle.xml";
             $opts = array(
-              'http'=>array(
+              'http' => array(
                 'method' => "GET",
                 'user_agent' => "PHP/SymfonyBundler",
                 'ignore_errors' => true,
-              )
+              ),
             );
             $context = stream_context_create($opts);
             $data = file_get_contents($url, false, $context); 
@@ -120,28 +141,27 @@ class GithubRepositoryClient implements RepositoryClientInterface
             throw new UnknownBundleException($bundle, $version, $namespace);
         }
         
-        $target = realpath($target);
-        
         $repoUrl = sprintf($this->publicRepoUrlFormatString, $namespace, $bundle);
         if ($this->createSubmodules) {
             // Add the bundle as a git submodule
-            $rel_path = str_replace($this->gitRoot, "", $target);
-            if ($rel_path[0] == "/") $rel_path = substr($rel_path, 1);
-            $data = "\n[submodule \"$rel_path\"]\n"
-                  . "\t\tpath = $rel_path\n"
-                  . "\t\turl = $repoUrl\n";
-            file_put_contents($this->gitRoot."/.gitmodules", $data, FILE_APPEND);
             $oldCwd = getcwd();
             chdir($this->gitRoot);
-            $output = shell_exec("git submodule update --init");
+            shell_exec("git submodule add -- $repoUrl $target");
+            if ($version != "master") {
+                // Checkout the right tag
+                chdir($target);
+                shell_exec("git checkout $version");
+            }
             chdir($oldCwd);
         } else {
             // Clone the bundle
             $output = shell_exec("git clone \"$repoUrl\" \"$target\"");
-            $oldCwd = getcwd();
-            chdir($target);
-            $output = shell_exec("git checkout $version");
-            chdir($oldCwd);
+            if ($version != "master") {
+                $oldCwd = getcwd();
+                chdir($target);
+                $output = shell_exec("git checkout $version");
+                chdir($oldCwd);
+            }
         }
         
         return true;
