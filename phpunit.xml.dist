@@ -13,10 +13,10 @@
 >
   <testsuites>
       <testsuite name="Bundler Configuration">
-          <directory>test/Bundler/Component/Config</directory>
+          <directory>test/SymfonyBundler/BundlerBundle/Config</directory>
       </testsuite>
       <testsuite name="Bundler Repository">
-          <directory>test/Bundler/Component/Repo</directory>
+          <directory>test/SymfonyBundler/BundlerBundle/Repo</directory>
       </testsuite>
   </testsuites>
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundler\Component\Config;
+namespace SymfonyBundler\BundlerBundle\Config;
 
 class BundleQueueTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +16,7 @@ class BundleQueueTest extends \PHPUnit_Framework_TestCase
      */
     public function testInsertBundle(BundleQueue $queue)
     {
-        $dependency = $this->getMock('Bundler\\Component\\Config\\BundleDescriptor');
+        $dependency = $this->getMock('SymfonyBundler\\BundlerBundle\\Config\\BundleDescriptor');
         $dependency->expects($this->any())
                    ->method('getDependencies')
                    ->will($this->returnValue(array()));
@@ -24,7 +24,7 @@ class BundleQueueTest extends \PHPUnit_Framework_TestCase
         $dependency->version = "dependencyVersion";
         $dependency->namespace = "dependencyNamespace";
         
-        $bundle = $this->getMock('Bundler\\Component\\Config\\BundleDescriptor');
+        $bundle = $this->getMock('SymfonyBundler\\BundlerBundle\\Config\\BundleDescriptor');
         $bundle->expects($this->any())
                ->method('getDependencies')
                ->will($this->returnValue(array($dependency)));
@@ -33,7 +33,7 @@ class BundleQueueTest extends \PHPUnit_Framework_TestCase
         $bundle->namespace = "bundle1Namespace";
         $queue->insert($bundle);
         
-        $bundle2 = $this->getMock('Bundler\\Component\\Config\\BundleDescriptor');
+        $bundle2 = $this->getMock('SymfonyBundler\\BundlerBundle\\Config\\BundleDescriptor');
         $bundle2->expects($this->any())
                ->method('getDependencies')
                ->will($this->returnValue(array($bundle)));
@@ -59,11 +59,11 @@ class BundleQueueTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @depends testInsertBundle
-     * @expectedException Bundler\Component\Exception\VersionConflictException
+     * @expectedException SymfonyBundler\BundlerBundle\Exception\VersionConflictException
      */
     public function testVersionConflict(BundleQueue $queue)
     {
-        $dependency = $this->getMock('Bundler\\Component\\Config\\BundleDescriptor');
+        $dependency = $this->getMock('SymfonyBundler\\BundlerBundle\\Config\\BundleDescriptor');
         $dependency->expects($this->any())
                    ->method('getDependencies')
                    ->will($this->returnValue(array()));
@@ -71,7 +71,7 @@ class BundleQueueTest extends \PHPUnit_Framework_TestCase
         $dependency->version = "MISMATCH";
         $dependency->namespace = "dependencyNamespace";
         
-        $bundle = $this->getMock('Bundler\\Component\\Config\\BundleDescriptor');
+        $bundle = $this->getMock('SymfonyBundler\\BundlerBundle\\Config\\BundleDescriptor');
         $bundle->expects($this->any())
                ->method('getDependencies')
                ->will($this->returnValue(array($dependency)));

@@ -1,8 +1,8 @@
 <?php
 
-namespace Bundler\Component\Repo;
+namespace SymfonyBundler\BundlerBundle\Repo;
 
-use Bundler\Component\Exception\UnknownBundleException;
+use SymfonyBundler\BundlerBundle\Exception\UnknownBundleException;
 
 class GithubRepositoryClient implements RepositoryClientInterface
 {
@@ -102,7 +102,7 @@ class GithubRepositoryClient implements RepositoryClientInterface
               ),
             );
             $context = stream_context_create($opts);
-            $data = file_get_contents($url, false, $context); 
+            $data = @file_get_contents($url, false, $context); 
             $exists = $data !== false;
             
             if (strpos($url, "http") === 0) {
@@ -142,27 +142,22 @@ class GithubRepositoryClient implements RepositoryClientInterface
         }
         
         $repoUrl = sprintf($this->publicRepoUrlFormatString, $namespace, $bundle);
+        $oldCwd = getcwd();
         if ($this->createSubmodules) {
             // Add the bundle as a git submodule
-            $oldCwd = getcwd();
             chdir($this->gitRoot);
-            shell_exec("git submodule add -- $repoUrl $target");
-            if ($version != "master") {
-                // Checkout the right tag
-                chdir($target);
-                shell_exec("git checkout $version");
-            }
-            chdir($oldCwd);
+            shell_exec("git submodule add -- $repoUrl $target 2>&1 > /dev/null");
         } else {
             // Clone the bundle
-            $output = shell_exec("git clone \"$repoUrl\" \"$target\"");
-            if ($version != "master") {
-                $oldCwd = getcwd();
-                chdir($target);
-                $output = shell_exec("git checkout $version");
-                chdir($oldCwd);
-            }
+            $output = shell_exec("git clone \"$repoUrl\" \"$target\" 2>&1 > /dev/null");
         }
+        
+        if ($version != "master") {
+            // Checkout the right tag
+            chdir($target);
+            shell_exec("git checkout $version 2>&1 > /dev/null");
+        }
+        chdir($oldCwd);
         
         return true;
     }

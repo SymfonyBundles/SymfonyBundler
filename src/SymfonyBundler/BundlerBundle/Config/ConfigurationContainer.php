@@ -1,11 +1,11 @@
 <?php
 
-namespace Bundler\Component\Config;
+namespace SymfonyBundler\BundlerBundle\Config;
 
-use Bundler\Component\Exception\BundlerException;
-use Bundler\Component\Exception\UnknownBundleException;
-use Bundler\Component\Exception\VersionConflictException;
-use Bundler\Component\Repo\RepositoryClientInterface;
+use SymfonyBundler\BundlerBundle\Exception\BundlerException;
+use SymfonyBundler\BundlerBundle\Exception\UnknownBundleException;
+use SymfonyBundler\BundlerBundle\Exception\VersionConflictException;
+use SymfonyBundler\BundlerBundle\Repo\RepositoryClientInterface;
 
 /**
  * Container that holds a Bundler configuration
@@ -19,7 +19,7 @@ class ConfigurationContainer
     protected $defaultNamespace;
     /**
      * A client object to the 
-     * @var Bundler\Component\Repo\RepositoryClientInterface
+     * @var SymfonyBundler\BundlerBundle\Repo\RepositoryClientInterface
      */
     protected $repositoryClient;
     protected $bundleQueue;
@@ -38,7 +38,7 @@ class ConfigurationContainer
     
     /**
      * Set the repository client implementation
-     * @param Bundler\Component\Repo\RepositoryClientInterface $repositoryClient 
+     * @param SymfonyBundler\BundlerBundle\Repo\RepositoryClientInterface $repositoryClient 
      */
     public function setRepositoryClient(RepositoryClientInterface $repositoryClient)
     {

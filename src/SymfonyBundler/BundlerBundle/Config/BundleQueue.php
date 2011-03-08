@@ -1,8 +1,8 @@
 <?php
 
-namespace Bundler\Component\Config;
+namespace SymfonyBundler\BundlerBundle\Config;
 
-use Bundler\Component\Exception\VersionConflictException;
+use SymfonyBundler\BundlerBundle\Exception\VersionConflictException;
 
 /**
  * BundleQueue is a datastructure that tracks bundle dependencies.

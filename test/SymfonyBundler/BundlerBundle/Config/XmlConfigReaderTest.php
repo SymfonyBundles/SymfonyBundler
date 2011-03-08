@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundler\Component\Config;
+namespace SymfonyBundler\BundlerBundle\Config;
 
 class XmlConfigReaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -9,7 +9,7 @@ class XmlConfigReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConfigFileDoesNotExist()
     {
-        $container = $this->getMock('Bundler\Component\Config\ConfigurationContainer',
+        $container = $this->getMock('SymfonyBundler\BundlerBundle\Config\ConfigurationContainer',
                                     null, array(), 'ConfigurationContainerStub_Null', false);
         $reader = new XmlConfigReader($container);
         $reader->read(__DIR__."/file-does-not-exist.xml");
@@ -17,7 +17,7 @@ class XmlConfigReaderTest extends \PHPUnit_Framework_TestCase
     
     public function testReadConfigFile()
     {
-        $container = $this->getMock('Bundler\Component\Config\ConfigurationContainer',
+        $container = $this->getMock('SymfonyBundler\BundlerBundle\Config\ConfigurationContainer',
                                     array("setDefaultRepository", "setDefaultNamespace", "addBundle"),
                                     array(), 'ConfigurationContainerStub_ReadConfigFile', false);
         $container->expects($this->once())

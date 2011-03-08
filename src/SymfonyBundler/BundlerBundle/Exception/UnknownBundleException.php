@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundler\Component\Exception;
+namespace SymfonyBundler\BundlerBundle\Exception;
 
 class UnknownBundleException extends BundlerException
 {

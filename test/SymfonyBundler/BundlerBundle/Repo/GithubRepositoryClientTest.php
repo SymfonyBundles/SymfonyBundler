@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundler\Component\Repo;
+namespace SymfonyBundler\BundlerBundle\Repo;
 
 class GithubRepositoryClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,7 +21,7 @@ class GithubRepositoryClientTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
-     * @expectedException Bundler\Component\Exception\UnknownBundleException
+     * @expectedException SymfonyBundler\BundlerBundle\Exception\UnknownBundleException
      */
     public function testGetConfigXmlUnknownBundle()
     {
@@ -103,7 +103,7 @@ class GithubRepositoryClientTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Bundler\Component\Exception\UnknownBundleException
+     * @expectedException SymfonyBundler\BundlerBundle\Exception\UnknownBundleException
      */
     public function testDownloadUnknownBundle()
     {

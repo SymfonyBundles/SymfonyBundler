@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundler\Component\Config;
+namespace SymfonyBundler\BundlerBundle\Config;
 
 /**
  * Describes a Bundle for use with SymfonyBundler and its dependencies

@@ -6,6 +6,6 @@ use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
-    'Bundler'                        => __DIR__.'/../src',
+    'SymfonyBundler' => __DIR__.'/../src',
 ));
 $loader->register();

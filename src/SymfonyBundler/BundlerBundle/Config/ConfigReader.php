@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundler\Component\Config;
+namespace SymfonyBundler\BundlerBundle\Config;
 
 /**
  * Base class for all Bundler configuration readers

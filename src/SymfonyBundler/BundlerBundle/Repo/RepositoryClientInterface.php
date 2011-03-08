@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundler\Component\Repo;
+namespace SymfonyBundler\BundlerBundle\Repo;
 
 interface RepositoryClientInterface
 {
@@ -19,7 +19,7 @@ interface RepositoryClientInterface
      * @param $bundle The bundle name
      * @param $version The bundle version
      * @return string The configuration data
-     * @throws Bundler\Component\Exception\UnknownBundleException When the bundle can't be found
+     * @throws SymfonyBundler\BundlerBundle\Exception\UnknownBundleException When the bundle can't be found
      */
     public function getConfigXml($namespace, $bundle, $version);
     
@@ -30,7 +30,7 @@ interface RepositoryClientInterface
      * @param $bundle The bundle name
      * @param $version The bundle version
      * @return bool Whether the download was successful or not
-     * @throws Bundler\Component\Exception\UnknownBundleException When the bundle can't be found
+     * @throws SymfonyBundler\BundlerBundle\Exception\UnknownBundleException When the bundle can't be found
      */
     public function downloadBundle($target, $namespace, $bundle, $version);
     
